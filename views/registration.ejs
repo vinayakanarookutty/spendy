@@ -87,22 +87,20 @@
 <body>
     <div class="container">
         <h1>Signup</h1>
-        <form>
+        <form action="/signup" method="post">
             <div>
-                <input type="text" placeholder="Name" name="name"required >
+                <input type="text" placeholder="Name" name="name" required >
+            </div>
+            <div>
+                <input type="email" placeholder="Email" name="email" required >
             </div>
             <div>
                 <input type="tel" placeholder="Mobile number" name="phone" pattern="[0-9]{10}" required >
             </div>
-            <div>
-                <input type="email" placeholder="Email"name="name" required >
-            </div>
             <div style="display: flex;">
-
                 <input style="width: 330px" type="password" placeholder="Password" name="password" id="password"  required>
                 <button type="button" id="showPassword" class="show">Show</button>
-                
-           </div>
+            </div>
             <div>
                 <input  style="width: 325px" type="password" placeholder="Confirm Password"  id="confirm" name="confirm" required >
                 <button type="button" id="showconPassword" class="show">Show</button>
@@ -110,6 +108,7 @@
             <button type="submit">Signup</button>
             <p>Already have an account? <a href="/" style="display: inline;">Loginin</a></p>
         </form>
+        
     </div>
 
 

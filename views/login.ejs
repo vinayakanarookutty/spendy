@@ -71,13 +71,20 @@
 </head>
 <body>
     <div class="container">
+        <% if (status=="Password is Wrong") { %>
+            <p style="color: red;"><%= status %></p>
+        <% } %>
+        <% if (status=="UserName is Wrong") { %>
+            <p style="color: red;"><%= status %></p>
+        <% } %>
         <h1>Login</h1>
-        <form>
+       
+        <form action="/login" method="post">
             <div>
-                <input type="email" placeholder="Email" required>
+                <input type="email" name="email" placeholder="Email" required>
             </div>
             <div>
-                <input type="password" placeholder="Password" required>
+                <input type="password" name="password" placeholder="Password" required>
             </div>
             <a>Forget password?</a>
             <button type="submit">Login</button>

@@ -14,7 +14,7 @@ mongoose.connect(
 var userSchema = mongoose.Schema({
   name: String,
   email: String,
-  mobileNo: Number,
+  phone: Number,
   password: String,
   budget:Number
 });
@@ -43,6 +43,48 @@ router.get("/signup", (req, res) => {
   res.render("registration");
 });
 
+router.post("/signup", async (req, res) => {
+  try {
+    console.log(req.body)
+    
+    var password = await bcrypt.hash(req.body.password, 10);
+    var user = new UserModal({
+      name: req.body.name,
+      email:  req.body.email,
+      phone: req.body.phone,
+      password: password,
+    });
+
+    // Save the user and wait for the operation to complete
+    await user.save();
+
+    // Redirect after the user is successfully saved
+    res.redirect("/");
+  } catch (error) {
+    // Handle any errors that might occur during the process
+    console.error("Error creating user:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
+router.post("/login", async (req, res) => {
+  console.log(req.body);
+  var user = await UserModal.find({ email: req.body.email });
+  console.log(user)
+  if (user) {
+    bcrypt.compare(req.body.password, user[0].password).then((response) => {
+      if (response) {
+        email = user.email;
+        res.redirect(`/home?id=${user[0]._id}`);
+      } else {
+        res.render("login", { status: "Password is Wrong" });
+      }
+    });
+  } else {
+    res.render("login", { status: "UserName is Wrong" });
+  }
+});
 
 router.get("/addEvent", async (req, res) => {
   // const userId = req.params.id;
@@ -82,28 +124,7 @@ router.get('/analysis', async (req,res) => {
   res.render("analysis")
 })
 
-router.post("/signup", async (req, res) => {
-    try {
-      
-      var password = await bcrypt.hash(req.body.password, 10);
-      var user = new UserModal({
-        name: req.body.name,
-        email:  req.body.email,
-        mobileNo: req.body.mobileNo,
-        password: password,
-      });
-  
-      // Save the user and wait for the operation to complete
-      await user.save();
-  
-      // Redirect after the user is successfully saved
-      res.redirect("/");
-    } catch (error) {
-      // Handle any errors that might occur during the process
-      console.error("Error creating user:", error);
-      res.status(500).send("Internal Server Error");
-    }
-  });
+
 
 
   router.post("/budget", async (req, res) => {
