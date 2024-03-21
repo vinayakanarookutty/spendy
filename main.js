@@ -68,6 +68,27 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+router.post("/flutter/login", async (req, res) => {
+  console.log(req.body);
+  var user = await UserModal.findOne({ email: req.body.email });
+  console.log(user)
+  if (user) {
+    bcrypt.compare(req.body.password, user.password).then((response) => {
+      if (response) {
+        email = user.email;
+        
+        res.status(200).json("Login Succesfull",user)
+      } else {
+   
+        res.status(404).json("Password is Wrong")
+      }
+    });
+  } else {
+   
+    res.status(404).json("UserNane is Wrong")
+  }
+});
+
 
 router.post("/login", async (req, res) => {
   console.log(req.body);
@@ -78,15 +99,15 @@ router.post("/login", async (req, res) => {
       if (response) {
         email = user.email;
         res.redirect(`/home?id=${user._id}`);
-        res.status(200).json("Login Succesfull",user)
+        // res.json("Login Succesfull",user)
       } else {
         res.render("login", { status: "Password is Wrong" });
-        res.status(404).json("Password is Wrong")
+        // res.status(404).json("Password is Wrong")
       }
     });
   } else {
     res.render("login", { status: "UserName is Wrong" });
-    res.status(404).json("UserNane is Wrong")
+    // res.status(404).json("UserNane is Wrong")
   }
 });
 
