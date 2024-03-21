@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home Dashboard</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     
 <style>
     
@@ -152,6 +153,7 @@
     .content {
         width: 100%;
         display: grid;
+        gap: 1rem;
         justify-items: center;
     }
 
@@ -312,6 +314,7 @@
             <div class="blank">
             </div>
             <div id="chart_div" style="width: 80%; height: 500px;"></div>
+            
             <div id="chart_div" style="width: 80%; height: 500px;"></div>
         </div>
     </div>
@@ -374,7 +377,7 @@
             }
         }
 
-        google.charts.load('current', {'packages':['corechart']});
+      google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
@@ -396,6 +399,9 @@
 
         var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
         chart.draw(data, options);
+
+        var chart2 = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart2.draw(data, options);
       }
 
     </script>
