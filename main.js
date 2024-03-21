@@ -235,9 +235,9 @@ router.get('/analysis', async (req,res) => {
  
   router.post("/spent", async (req, res) => {
     try {
-      
-      const eventIdFromQuery = req.query.id;
-      const spent=req.body.spent
+      console.log(req.body)
+      const eventIdFromQuery = req.body.userId;
+      const spend=req.body.spent
       console.log(spent)
       const updatedEvent = await EventModal.findOneAndUpdate(
         { _id: eventIdFromQuery }, // Find user by email
