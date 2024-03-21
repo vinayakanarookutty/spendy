@@ -236,23 +236,23 @@ router.get('/analysis', async (req,res) => {
   router.post("/spent", async (req, res) => {
     try {
       console.log(req.body)
-      const eventIdFromQuery = req.body.userId;
-      const spend=req.body.spent
-      console.log(spent)
+      const eventIdFromQuery = req.body.eventId;
+      const userIdFromQuery=req.body.userId;
+      const spend=parseInt(req.body.spend)
       const updatedEvent = await EventModal.findOneAndUpdate(
         { _id: eventIdFromQuery }, // Find user by email
-        { $set: { actualRate:spent } }, // Specify the fields to update
+        { $set: { actualRate:spend } }, // Specify the fields to update
         { new: true } // To return the updated document
       );
-     console.log(updatedEvent)
-     userId=updatedEvent.user
+    
+     
      const updatedUser = await UserModal.findOneAndUpdate(
-      { _id: userId }, // Find user by email
-      { $inc: { budget:-spent } }, // Specify the fields to update
+      { _id:userIdFromQuery }, // Find user by email
+      { $inc: { budget:-spend } }, // Specify the fields to update
       { new: true } // To return the updated document
     );
       // Redirect after the user is successfully saved
-      res.redirect(`/home?email=${updatedUser.email}`);
+      res.redirect(`/home?id=${userIdFromQuery}`);
     } catch (error) {
       // Handle any errors that might occur during the process
       console.error("Error creating user:", error);
