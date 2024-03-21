@@ -455,7 +455,7 @@
             <img style="height: 2rem"; src="spendyLogo.png">
             <div class="budget">
                 <h3>Budget</h3>
-                <h3 class="myBudget">2000/-</h3>
+                <h3 class="myBudget"><%=budget %>/-</h3>
                 <button id="saveBtn" class="btnSave">
                     <span class="material-symbols-outlined">
                         edit
@@ -463,16 +463,20 @@
                 </button>
 
                 <div id="mymodal" class="modal">
+                <form action="/budget" method="post">
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <h2>My Budget</h2>
+                    
                     <hr style="margin-bottom: 10px;">
                     <p>Increase budget:</p>
-                    <input type="text" id="input1" placeholder="Amount">
+                    <input type="hidden" name="userId" value="<%=userId%>"> 
+                    <input name="increaseAmount" type="text" id="input1" placeholder="Amount">
                     <p>Decrease budget:</p>
-                    <input type="text" id="input1" placeholder="Amount">
-                    <button id="modalSubmitBtn">Submit</button>
+                    <input name="decreaseAmount" type="text" id="input1" placeholder="Amount">
+                    <button type="submit" id="modalSubmitBtn">Submit</button>
                 </div>
+            </form>
                 </div>
 
             </div>

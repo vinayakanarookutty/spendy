@@ -86,11 +86,95 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/addEvent", async (req, res) => {
+
+router.get("/home", async (req, res) => {
+  const userIdFromQuery = req.query.id;
+  console.log(userIdFromQuery);
+  var user = await UserModal.findOne({ _id: userIdFromQuery });
+  
+  
+
+  var budget = 0
+  if(user?.budget!=null)
+  {
+    budget = user.budget
+   
+  }
+  // Set user details in local storage
+  res.render("home", { user: user, budget: budget ,userId:userIdFromQuery});
+});
+
+
+router.post("/budget", async (req, res) => {
+  try {
+
+   var user = await UserModal.findOne({ _id:req.body.userId  });
+   if(user.budget)
+   {
+    let budget=user.budget
+    if(req.body.increaseAmount)
+   {
+    let increment=parseInt(req.body.increaseAmount)
+    budget=budget+increment
+   }
+   else if(req.body.decreaseAmount){
+    let decrement=parseInt(req.body.decreaseAmount)
+    budget=budget-decrement
+   }
+  
+    const updatedUser = await UserModal.findOneAndUpdate(
+      { _id: req.body.userId }, // Find user by email
+      { $set: { budget:budget } }, // Specify the fields to update
+      { new: true } // To return the updated document
+    );
+   console.log(updatedUser)
+
+    // Save the user and wait for the operation to complete
+
+
+    // Redirect after the user is successfully saved
+    res.redirect(`/home?id=${req.body.userId}`);
+   }
+   else{
+    let budget=0
+    if(req.body.increaseAmount)
+   {
+    let increment=parseInt(req.body.increaseAmount)
+    budget=increment
+   }
+   else if(req.body.decreaseAmount){
+    let decrement=parseInt(req.body.decreaseAmount)
+    budget=decrement
+   }
+  
+    const updatedUser = await UserModal.findOneAndUpdate(
+      { _id: req.body.userId }, // Find user by email
+      { $set: { budget:budget } }, // Specify the fields to update
+      { new: true } // To return the updated document
+    );
+   console.log(updatedUser)
+
+    // Save the user and wait for the operation to complete
+
+
+    // Redirect after the user is successfully saved
+    res.redirect(`/home?id=${req.body.userId}`);
+   }
+  
+   
+  } catch (error) {
+    // Handle any errors that might occur during the process
+    console.error("Error creating user:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/addEvent", async (req, res) => {
   // const userId = req.params.id;
   // const user = await UserModal.findOne(
   //   { _id: userId });
-  res.render("addEvent");
+  // res.render("addEvent");
+  console.log(req.body)
 });
 
 router.post('/submit-form', (req, res) => {
@@ -127,30 +211,7 @@ router.get('/analysis', async (req,res) => {
 
 
 
-  router.post("/budget", async (req, res) => {
-    try {
-
-      const userIdFromQuery = req.query.id;
-      const budget=req.body.budget
-      console.log(budget)
-      const updatedUser = await UserModal.findOneAndUpdate(
-        { _id: userIdFromQuery }, // Find user by email
-        { $set: { budget:budget } }, // Specify the fields to update
-        { new: true } // To return the updated document
-      );
-     console.log(updatedUser)
-  
-      // Save the user and wait for the operation to complete
  
-  
-      // Redirect after the user is successfully saved
-      res.redirect(`/home?email=${updatedUser.email}`);
-    } catch (error) {
-      // Handle any errors that might occur during the process
-      console.error("Error creating user:", error);
-      res.status(500).send("Internal Server Error");
-    }
-  });
   router.post("/spent", async (req, res) => {
     try {
       
@@ -225,21 +286,5 @@ router.post("/login", async (req, res) => {
 });
 
 //Home Routes for Displaying HomePage Page
-router.get("/home", async (req, res) => {
-    const userEmailFromQuery = req.query.email;
-    console.log(userEmailFromQuery);
-    var user = await UserModal.findOne({ email: userEmailFromQuery });
-    var userId=user?._id
-    console.log(userId)
-    var eventDetails = await EventModal.find({ user: userId });
-    console.log(eventDetails)
 
-    var budget = 0
-    if(user?.budget!=null)
-    {
-      budget = user.budget
-    }
-    // Set user details in local storage
-    res.render("home", { user: user,event: eventDetails, budget: budget });
-  });
   module.exports = router
