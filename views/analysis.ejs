@@ -61,6 +61,7 @@
     }
     
     #content {
+        justify-items: center;
         display: grid;
         gap:4rem;
         height: 100%;
@@ -147,6 +148,12 @@
         width: min-content;
     }
 
+    .content {
+        width: 100%;
+        display: grid;
+        justify-items: center;
+    }
+
     .btnSave {
         margin-left: 10px;
         padding-top: 1dvh;
@@ -162,12 +169,33 @@
         list-style: none;
         font-size: 18px;
 
+        .material-symbols-outlined {
+            color: #000000;
+            margin: 0px 10px;
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+          }
+
         li{
+            justify-items: center;
+            align-content: center;
+            display: flex;
             padding: 2px 0;
             color: #000000;
         }
-        .selected {
+        li.selected {
             color: #00983d;
+            .material-symbols-outlined {
+                color: #00983d;
+                font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+              }
         }
     }
     hr {
@@ -268,14 +296,21 @@
         <h2>Midhun Murali</h1>
             <hr>
             <ul>
-                <li><a href="/home">Home</a></li>
-                <li class="selected"><a>Analysis</a></li>
+                <li>
+                    <span class="material-symbols-outlined">home
+                    </span>
+                    <a href="/home">Home</a></li>
+                <li class="selected">
+                    <span class="material-symbols-outlined">monitoring
+                    </span>
+                    <a>Analysis</a></li>
             </ul>
     </div>
     <div id="content">
         <div class="content">
             <div class="blank">
             </div>
+            <div id="chart_div" style="width: 80%; height: 500px;"></div>
         </div>
     </div>
     <div id="header">
@@ -312,6 +347,7 @@
             <span class="material-symbols-outlined">power_settings_new</span></button>
     </div>
 
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
         document.getElementById('toggle-sidebar').addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('collapsed');
@@ -331,10 +367,34 @@
         }
 
         window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
         }
-        }
+
+        google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Day 1', 'Actual', 'Spend'],
+          ['Day 2',  1000,      400],
+          ['Day 3',  1170,      460],
+          ['Day 4',  660,       1120],
+          ['Day 5',  1030,      540],
+          ['Day 6',  660,       1120],
+          ['Day 7',  1030,      540]
+        ]);
+
+        var options = {
+          title: 'Food',
+          hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
 
     </script>
 </body>

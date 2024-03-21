@@ -162,12 +162,33 @@
         list-style: none;
         font-size: 18px;
 
+        .material-symbols-outlined {
+            color: #000000;
+            margin: 0px 10px;
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+          }
+
         li{
+            justify-items: center;
+            align-content: center;
+            display: flex;
             padding: 2px 0;
             color: #000000;
         }
-        .selected {
+        li.selected {
             color: #00983d;
+            .material-symbols-outlined {
+                color: #00983d;
+                font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+              }
         }
     }
     hr {
@@ -268,8 +289,14 @@
         <h2>Midhun Murali</h1>
             <hr>
             <ul>
-                <li class="selected"><a>Home</a></li>
-                <li><a href="/analysis">Analysis</a></li>
+                <li class="selected">
+                    <span class="material-symbols-outlined">home
+                    </span>
+                    <a>Home</a></li>
+                <li>
+                    <span class="material-symbols-outlined">monitoring
+                    </span>
+                    <a href="/analysis">Analysis</a></li>
             </ul>
     </div>
     <div id="content">
