@@ -471,67 +471,25 @@
             </div>
     
             <!-- Add Event Modal -->
-            
+    <% eventDetails.forEach(function(event) { %>
             <div class="event">
-                <h1>Food</h1>
-                <p style="margin: 5px 0px;">Breakfast</p>
-                <h4>Expected amount: </h4>
-                <p><h4 style="display: inline;">Spent amount: </h4> <input type="text"></p>
+                <h1><%= event.eventName %></h1>
+                <p style="margin: 5px 0px;"><%= event.eventDescription %></p>
+                <h4>Expected amount: <%= event.expectedRate %> </h4>
+                <div style="display: flex ;justify-items: center;align-content: center;">
+                <form action="/">
+                <p><h4 style="display: inline; margin-top: 0.5%;">Spent amount: </h4> <input style="height: 1.5rem;margin-top: 0.2%;margin-left: 0.5rem;" type="text"></p>
+                <button  class="btnSave">
+                    <span style="color: #fff;" class="material-symbols-outlined">
+                       save
+                    </span>
+                </button>
+                </form>
             </div>
-            <div class="event">
-                <h1>Food</h1>
-                <p style="margin: 5px 0px;">Breakfast</p>
-                <h4>Expected amount: </h4>
-                <p><h4 style="display: inline;">Spent amount: </h4> <input type="text"></p>
             </div>
-            <div class="event">
-                <h1>Food</h1>
-                <p style="margin: 5px 0px;">Breakfast</p>
-                <h4>Expected amount: </h4>
-                <p><h4 style="display: inline;">Spent amount: </h4> <input type="text"></p>
-            </div>
-            <div class="event">
-                <h1>Food</h1>
-                <p style="margin: 5px 0px;">Breakfast</p>
-                <h4>Expected amount: </h4>
-                <p><h4 style="display: inline;">Spent amount: </h4> <input type="text"></p>
-            </div>
-            <div class="event">
-                <h1>Food</h1>
-                <p style="margin: 5px 0px;">Breakfast</p>
-                <h4>Expected amount: </h4>
-                <p><h4 style="display: inline;">Spent amount: </h4> <input type="text"></p>
-            </div>
-            <div class="event">
-                <h1>Food</h1>
-                <p style="margin: 5px 0px;">Breakfast</p>
-                <h4>Expected amount: </h4>
-                <p><h4 style="display: inline;">Spent amount: </h4> <input type="text"></p>
-            </div>
-            <div class="event">
-                <h1>Food</h1>
-                <p style="margin: 5px 0px;">Breakfast</p>
-                <h4>Expected amount: </h4>
-                <p><h4 style="display: inline;">Spent amount: </h4> <input type="text"></p>
-            </div>
-            <div class="event">
-                <h1>Food</h1>
-                <p style="margin: 5px 0px;">Breakfast</p>
-                <h4>Expected amount: </h4>
-                <p><h4 style="display: inline;">Spent amount: </h4> <input type="text"></p>
-            </div>
-            <div class="event">
-                <h1>Food</h1>
-                <p style="margin: 5px 0px;">Breakfast</p>
-                <h4>Expected amount: </h4>
-                <p><h4 style="display: inline;">Spent amount: </h4> <input type="text"></p>
-            </div>
-            <div class="event">
-                <h1>Food</h1>
-                <p style="margin: 5px 0px;">Breakfast</p>
-                <h4>Expected amount: </h4>
-                <p><h4 style="display: inline;">Spent amount: </h4> <input type="text"></p>
-            </div>
+
+    <% }); %>        
+           
         </div>
     </div>
     <div id="header">
@@ -544,7 +502,7 @@
                 <h3>Budget</h3>
                 <h3 class="myBudget"><%=budget %>/-</h3>
                 <button id="saveBtn" class="btnSave">
-                    <span class="material-symbols-outlined">
+                    <span style="color: #fff;" class="material-symbols-outlined">
                         edit
                     </span>
                 </button>

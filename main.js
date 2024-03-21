@@ -77,7 +77,7 @@ router.post("/flutter/login", async (req, res) => {
       if (response) {
         email = user.email;
         
-        res.status(200).json("Login Succesfull",user)
+        res.status(200).send(json(user))
       } else {
    
         res.status(404).json("Password is Wrong")
@@ -116,7 +116,8 @@ router.get("/home", async (req, res) => {
   const userIdFromQuery = req.query.id;
   console.log(userIdFromQuery);
   var user = await UserModal.findOne({ _id: userIdFromQuery });
-  
+  var eventDetails = await EventModal.find({ user: userIdFromQuery });
+  console.log(eventDetails)
   
 
   var budget = 0
@@ -126,7 +127,7 @@ router.get("/home", async (req, res) => {
    
   }
   // Set user details in local storage
-  res.render("home", { user: user, budget: budget ,userId:userIdFromQuery});
+  res.render("home", { user: user, budget: budget ,userId:userIdFromQuery,eventDetails});
 });
 
 
