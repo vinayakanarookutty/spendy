@@ -476,15 +476,16 @@
                 <h1><%= event.eventName %></h1>
                 <p style="margin: 5px 0px;"><%= event.eventDescription %></p>
                 <h4>Expected amount: <%= event.expectedRate %> </h4>
+                <form action="/spent" method="post">
                 <div style="display: flex ;justify-items: center;align-content: center;">
-                <form action="/">
-                <p><h4 style="display: inline; margin-top: 0.5%;">Spent amount: </h4> <input style="height: 1.5rem;margin-top: 0.2%;margin-left: 0.5rem;" type="text"></p>
+                    <input type="hidden" name="userId" value="<%=userId%>">   
+                <p><h4 style="display: inline; margin-top: 0.5%;">Spent amount: </h4> <input style="height: 1.5rem;margin-top: 0.2%;margin-left: 0.5rem;" name="spend" type="number"></p>
                 <button  class="btnSave">
                     <span style="color: #fff;" class="material-symbols-outlined">
                        save
                     </span>
                 </button>
-                </form>
+            </form>
             </div>
             </div>
 
