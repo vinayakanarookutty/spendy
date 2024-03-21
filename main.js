@@ -78,6 +78,10 @@ router.get('/analysis/:id', async (req,res) => {
   res.render("analysis",{user: user,eventArray:eventDetails})
 })
 
+router.get('/analysis', async (req,res) => {
+  res.render("analysis")
+})
+
 router.post("/signup", async (req, res) => {
     try {
       

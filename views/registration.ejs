@@ -1,159 +1,147 @@
 <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <title> Responsive Login and Signup Form </title>             
-    </head>
-    <body>
-        <!-- SignUp Form -->
-        <section class="container forms">
-            <div class="form signup">
-                <div class="form-content">
-                    <header>Signup</header>
-                    <form method="post" action="/signup">
-                        
-                        <div class="field input-field">
-                            <input type="text" placeholder="FullName" class="input" id="name" name="name">
-                        </div>
-
-                        <div class="field input-field">
-                            <input type="number" placeholder="PhoneNumber" class="input" id="mobileNo" name="mobileNo">
-                        </div>
-
-                        <div class="field input-field">
-                            <input type="email" placeholder="Email" class="input" id="email" name="email">
-                        </div>
-
-                        <div class="field input-field">
-                            <input type="password" placeholder="Create password" class="password" id="password" name="password">
-                        </div>
-
-                        <div class="field input-field">
-                            <input type="password" placeholder="Confirm password" class="password" id="confirmpassword" name="confirmpassword">
-                            <i class='bx bx-hide eye-icon'></i>
-                        </div>
-
-                        <div class="field button-field">
-                            <button type="submit">Signup</button>
-                        </div>
-                    </form>
-
-                    <div class="form-link">
-                        <span>Already have an account? <a href="/" class="link login-link">Login</a></span>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </body>
-        <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-
-        *{
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <style>
+        * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: "Poppins";
+            font-weight: 400;
+            font-size: 20px
         }
-        .container{
+        h1,h2,h3 {
+            font-size: 40px;
+            font-weight: 500;
+        }
+        body {
+            align-content: center;
+            justify-items: center;
+            display: grid;
+            background-color: #56a676;
             height: 100vh;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #4070f4;
-            column-gap: 30px;
+            max-height: 100vh;
         }
-        .form{
-            position: absolute;
-            max-width: 430px;
-            width: 100%;
-            padding: 30px;
-            border-radius: 6px;
-            background: #FFF;
+        .container {
+            align-content: center;
+            justify-items: center;
+            display: grid;
+            background-color: white;
+            width: max-content;
+            padding: 1.5rem 3rem  ;
+            
+            border-radius: 15px;
+            
+
+            form {
+                margin: 10px 0;
+                align-content: center;
+                justify-items: center;
+                display: grid;
+                gap: .5rem;
+            }
+
+            input {
+                outline: none;
+                height: 2rem;
+                width: 20rem;
+                padding: 5px 15px;
+                border-radius: 5px;
+                font-weight: 100;
+                border: 1px solid#CACACA;
+            }
+            p{
+                font-size: 15px;
+            }
+            a{
+                font-size: 15px;
+                color: #56a676;
+            }
+            button {
+                padding: 10px 15px;
+                width: 20rem;
+                border: none;
+                color: aliceblue;
+                background-color: #478660;
+                border-radius: 3px;
+            }
+            .show {
+                /* Style the show password button here */
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+                color: #478660;
+                width: 10%;
+                font-size: 15px;
+            }
         }
-        .form.signup{
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .forms.show-signup .form.signup{
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .forms.show-signup .form.login{
-            opacity: 0;
-            pointer-events: none;
-        }
-        .forms.signup .form.login{
-            opacity: 0;
-            pointer-events: none;
-        }
-        header{
-            font-size: 28px;
-            font-weight: 600;
-            color: #232836;
-            text-align: center;
-        }
-        form{
-            margin-top: 30px;
-        }
-        .form .field{
-            position: relative;
-            height: 50px;
-            width: 100%;
-            margin-top: 20px;
-            border-radius: 6px;
-        }
-        .field input,
-        .field button{
-            height: 100%;
-            width: 100%;
-            border: none;
-            font-size: 16px;
-            font-weight: 400;
-            border-radius: 6px;
-        }
-        .field input{
-            outline: none;
-            padding: 0 15px;
-            border: 1px solid#CACACA;
-        }
-        .field input:focus{
-            border-bottom-width: 2px;
-        }
-        .eye-icon{
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
-            font-size: 18px;
-            color: #8b8b8b;
-            cursor: pointer;
-            padding: 5px;
-        }
-        .field button{
-            color: #fff;
-            background-color: #0171d3;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .field button:hover{
-            background-color: #016dcb;
-        }
-        .form-link{
-            text-align: center;
-            margin-top: 10px;
-        }
-        .form-link span,
-        .form-link a{
-            font-size: 14px;
-            font-weight: 400;
-            color: #232836;
-        }
-        .form a{
-            color: #0171d3;
-            text-decoration: none;
-        }
-        .form-content a:hover{
-            text-decoration: underline;
-        }
+       
+  
+     
+
     </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Signup</h1>
+        <form>
+            <div>
+                <input type="text" placeholder="Name" name="name"required >
+            </div>
+            <div>
+                <input type="tel" placeholder="Mobile number" name="phone" pattern="[0-9]{10}" required >
+            </div>
+            <div>
+                <input type="email" placeholder="Email"name="name" required >
+            </div>
+            <div style="display: flex;">
+
+                <input style="width: 330px" type="password" placeholder="Password" name="password" id="password"  required>
+                <button type="button" id="showPassword" class="show">Show</button>
+                
+           </div>
+            <div>
+                <input  style="width: 325px" type="password" placeholder="Confirm Password"  id="confirm" name="confirm" required >
+                <button type="button" id="showconPassword" class="show">Show</button>
+            </div>
+            <button type="submit">Signup</button>
+            <p>Already have an account? <a href="/" style="display: inline;">Loginin</a></p>
+        </form>
+    </div>
+
+
+    <script>
+        const passwordField = document.getElementById("password");
+        const showPasswordButton = document.getElementById("showPassword");
+        const confirmField = document.getElementById("confirm");
+        const showConfirmdButton = document.getElementById("showconPassword");
+
+        showPasswordButton.addEventListener("click", function() {
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            showPasswordButton.textContent = "Hide";
+        } else {
+            passwordField.type = "password";
+            showPasswordButton.textContent = "Show";
+        }
+        });
+
+        showConfirmdButton.addEventListener("click", function() {
+        if (confirmField.type === "password") {
+            confirmField.type = "text";
+            showConfirmdButton.textContent = "Hide";
+        } else {
+            confirmField.type = "password";
+            showConfirmdButton.textContent = "Show";
+        }
+        });
+
+        
+    </script>
+
+
+</body>
 </html>
