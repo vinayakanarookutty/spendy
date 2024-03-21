@@ -125,6 +125,26 @@ router.get("/home", async (req, res) => {
   res.render("home", { user: user, budget: budget ,userId:userIdFromQuery,eventDetails});
 });
 
+router.get("/flutter/home", async (req, res) => {
+  const userIdFromQuery = req.query.id;
+  console.log(userIdFromQuery);
+  var user = await UserModal.findOne({ _id: userIdFromQuery });
+  var eventDetails = await EventModal.find({ user: userIdFromQuery });
+  console.log(eventDetails)
+  
+
+  var budget = 0
+  if(user?.budget!=null)
+  {
+    budget = user.budget
+   
+  }
+  let userDetails=JSON.stringify(eventDetails)
+  res.status(200).send(userDetails)
+  // Set user details in local storage
+ 
+});
+
 
 router.post("/budget", async (req, res) => {
   try {
