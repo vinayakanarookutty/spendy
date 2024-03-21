@@ -70,13 +70,13 @@ router.post("/signup", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   console.log(req.body);
-  var user = await UserModal.find({ email: req.body.email });
+  var user = await UserModal.findOne({ email: req.body.email });
   console.log(user)
   if (user) {
-    bcrypt.compare(req.body.password, user[0].password).then((response) => {
+    bcrypt.compare(req.body.password, user.password).then((response) => {
       if (response) {
         email = user.email;
-        res.redirect(`/home?id=${user[0]._id}`);
+        res.redirect(`/home?id=${user._id}`);
       } else {
         res.render("login", { status: "Password is Wrong" });
       }
