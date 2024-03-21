@@ -427,11 +427,11 @@
             </div>
 
             <!-- Add Event Modal -->
-
+            
             <div id="addEventModal" class="eventModal">
                 <div class="modal-content">
                     <span class="closeEvent">&times;</span>
-                    <form id="eventForm" action="/submit-form" method="POST">
+                    <form id="eventForm" action="/addEvent" method="POST">
                         <div>
                             <div class="field input-field">
                                 <select class="field input-field" id="category" name="category">
@@ -452,7 +452,10 @@
                         <div>
                             <input type="text" placeholder="Description" name="description" required>
                         </div>
-                        
+                        <div>
+                            <input type="number" placeholder="Expected Price" name="price" required>
+                        </div>
+                        <input type="hidden" name="userId" value="<%=userId%>"> 
                         <div class="field input-field" id="listContainer">
                             <div style="display: flex; gap: 10px; width: 97%; justify-content: flex-start;">
                                 <input style="width: 60%;" type="text" placeholder="Name" class="input" name="itemName[]">
@@ -466,9 +469,9 @@
                     </form>
                 </div>
             </div>
-
+    
             <!-- Add Event Modal -->
-
+            
             <div class="event">
                 <h1>Food</h1>
                 <p style="margin: 5px 0px;">Breakfast</p>

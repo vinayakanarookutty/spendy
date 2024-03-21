@@ -23,8 +23,9 @@ var eventSchema = mongoose.Schema({
   eventDescription: String,
   expectedRate: Number,
   actualRate: Number,
+  combinedItems:Array,
   user: { type: Schema.Types.ObjectId, ref: 'user' }
-});
+},{strict:false});
 
 // Registering schema to mongoose
 var UserModal = mongoose.model("user", userSchema);
@@ -77,12 +78,15 @@ router.post("/login", async (req, res) => {
       if (response) {
         email = user.email;
         res.redirect(`/home?id=${user._id}`);
+        res.status(200).json("Login Succesfull",user)
       } else {
         res.render("login", { status: "Password is Wrong" });
+        res.status(404).json("Password is Wrong")
       }
     });
   } else {
     res.render("login", { status: "UserName is Wrong" });
+    res.status(404).json("UserNane is Wrong")
   }
 });
 
@@ -174,27 +178,28 @@ router.post("/addEvent", async (req, res) => {
   // const user = await UserModal.findOne(
   //   { _id: userId });
   // res.render("addEvent");
-  console.log(req.body)
-});
-
-router.post('/submit-form', (req, res) => {
-  const category = req.body.category;
-  const description = req.body.description;
   const itemNames = req.body.itemName;
   const itemQuantities = req.body.itemQuantity;
-
-  // Combine item names and quantities into an array of objects
   const items = itemNames.map((itemName, index) => ({
     name: itemName,
     quantity: itemQuantities[index]
   }));
-req.body.addList=items
-  console.log('Body:', req.body);
-  
 
-  // Send a response
-  res.send('Form submitted successfully!');
+
+  var events = new EventModal({
+  eventName: req.body.category,
+  eventDescription:req.body.description,
+  combinedItems:items,
+  expectedRate: req.body.price,
+  user: req.body.userId
+  });
+  events.save();
+  res.redirect(`/home?id=${req.body.userId}`);
+
+  
 });
+
+
 
 router.get('/analysis/:id', async (req,res) => {
   const userId = req.params.id;
