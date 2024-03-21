@@ -18,7 +18,7 @@
     
     body {
         margin: 0;
-        height: 100vh;
+        height: 95.4vh;
         overflow-y: auto;
         font-family: Arial, sans-serif;
     }
@@ -63,10 +63,9 @@
     }
     
     #content {
-        justify-items: center;
         display: grid;
-        gap:4rem;
-        height: 100%;
+        height: 95.4vh;
+        overflow-y: auto;
         background-color: #bce3cc;
         margin-left: 250px;
         padding: 20px;
@@ -151,7 +150,7 @@
     }
 
     .content {
-        width: 100%;
+        width: 99%;
         display: grid;
         gap: 1rem;
         justify-items: center;
@@ -290,11 +289,57 @@
         a {
             text-decoration: none;
         }
+                /* The snackbar - position it at the bottom and in the middle of the screen */
+  #snackbar {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    background-color: #56a676; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 50%; /* Center the snackbar */
+    bottom: 30px; /* 30px from the bottom */
+  }
+  
+  /* Show the snackbar when clicking on a button (class added with JavaScript) */
+  #snackbar.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+  
+  /* Animations to fade the snackbar in and out */
+  @-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+  
+  @keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+  
+  @-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+  
+  @keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
   
 
 </style>
 </head>
-<body>
+<body onload="snackbar()">
+    <div id="snackbar">Some text some message..</div>
     <div id="sidebar">
         <h2>Midhun Murali</h1>
             <hr>
@@ -315,7 +360,9 @@
             </div>
             <div id="chart_div" style="width: 80%; height: 500px;"></div>
             
-            <div id="chart_div" style="width: 80%; height: 500px;"></div>
+            <div id="chart_div2" style="width: 80%; height: 500px;"></div>
+
+            <div id="chart_div3" style="width: 80%; height: 500px;"></div>
         </div>
     </div>
     <div id="header">
@@ -392,7 +439,7 @@
         ]);
 
         var options = {
-          title: 'Food',
+          title: 'Travel',
           hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
           vAxis: {minValue: 0}
         };
@@ -400,9 +447,18 @@
         var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
         chart.draw(data, options);
 
-        var chart2 = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        var chart2 = new google.visualization.AreaChart(document.getElementById('chart_div2'));
         chart2.draw(data, options);
+
+        var chart3 = new google.visualization.AreaChart(document.getElementById('chart_div3'));
+        chart3.draw(data, options);
       }
+
+    function snackbar() {
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
 
     </script>
 </body>
