@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
 var mongoose = require("mongoose");
-var bcrypt = require("bcrypt");
 const Schema = mongoose.Schema;
 // MongoDB Connection to cloud database
 mongoose.connect(
@@ -48,12 +47,11 @@ router.post("/signup", async (req, res) => {
   try {
     console.log(req.body)
     
-    var password = await bcrypt.hash(req.body.password, 10);
     var user = new UserModal({
       name: req.body.name,
       email:  req.body.email,
       phone: req.body.phone,
-      password: password,
+      password: req.body.password,
     });
 
     // Save the user and wait for the operation to complete
@@ -73,8 +71,7 @@ router.post("/flutter/login", async (req, res) => {
   var user = await UserModal.findOne({ email: req.body.email });
   console.log(user)
   if (user) {
-    bcrypt.compare(req.body.password, user.password).then((response) => {
-      if (response) {
+      if (user.password == req.body.password) {
         email = user.email;
         
         res.status(200).json("Login Succesfull",user)
@@ -82,7 +79,6 @@ router.post("/flutter/login", async (req, res) => {
    
         res.status(404).json("Password is Wrong")
       }
-    });
   } else {
    
     res.status(404).json("UserNane is Wrong")
@@ -95,8 +91,7 @@ router.post("/login", async (req, res) => {
   var user = await UserModal.findOne({ email: req.body.email });
   console.log(user)
   if (user) {
-    bcrypt.compare(req.body.password, user.password).then((response) => {
-      if (response) {
+      if (user.password == req.body.password) {
         email = user.email;
         res.redirect(`/home?id=${user._id}`);
         // res.json("Login Succesfull",user)
@@ -104,7 +99,6 @@ router.post("/login", async (req, res) => {
         res.render("login", { status: "Password is Wrong" });
         // res.status(404).json("Password is Wrong")
       }
-    });
   } else {
     res.render("login", { status: "UserName is Wrong" });
     // res.status(404).json("UserNane is Wrong")
