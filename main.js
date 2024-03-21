@@ -44,11 +44,30 @@ router.get("/signup", (req, res) => {
 });
 
 
-router.get("/addEvent/:id", async (req, res) => {
-  const userId = req.params.id;
-  const user = await UserModal.findOne(
-    { _id: userId });
-  res.render("addEvent", {user: user});
+router.get("/addEvent", async (req, res) => {
+  // const userId = req.params.id;
+  // const user = await UserModal.findOne(
+  //   { _id: userId });
+  res.render("addEvent");
+});
+
+router.post('/submit-form', (req, res) => {
+  const category = req.body.category;
+  const description = req.body.description;
+  const itemNames = req.body.itemName;
+  const itemQuantities = req.body.itemQuantity;
+
+  // Combine item names and quantities into an array of objects
+  const items = itemNames.map((itemName, index) => ({
+    name: itemName,
+    quantity: itemQuantities[index]
+  }));
+req.body.addList=items
+  console.log('Body:', req.body);
+  
+
+  // Send a response
+  res.send('Form submitted successfully!');
 });
 
 router.get('/analysis/:id', async (req,res) => {
