@@ -9,7 +9,7 @@
 <style>
     
     * {
-        font-family: "Poppins";
+        font-family: "poppins";
         margin: 0;
         padding: 0;
         font-weight: 500;
@@ -196,28 +196,26 @@
         opacity: 30%;
     }
 
-    /* The modal (background) */
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
             left: 0;
             top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.5); 
         }
   
-        /* modal Content/Box */
         .modal-content {
             border-radius: 5px;
             background-color: #fefefe;
-            margin: 15% auto; /* 15% from the top and centered */
+            margin: 15% auto;
             padding: 20px;
             font-size: 20px;
             border: 1px solid #888;
-            width: 20%; /* Could be more or less, depending on screen size */
+            width: 20%; 
             input{
                 width: 90%;
                 margin: 5px 0px;
@@ -239,7 +237,6 @@
             cursor: pointer;
         }
         
-        /* Button inside the modal */
         #modalSubmitBtn {
             display: block;
             margin-top: 10px;
@@ -280,6 +277,78 @@
         a {
             text-decoration: none;
         }
+
+        .eventModal{
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.5); 
+
+            .modal-content {
+                border-radius: 5px;
+                background-color: #fefefe;
+                margin: 15% auto;
+                padding: 20px;
+                font-size: 20px;
+                border: 1px solid #888;
+                width: 20%; 
+                input{
+                    width: 90%;
+                    margin: 5px 0px;
+                    padding-left: 5px;
+                    font-size: 20px;
+                }
+                select{
+                    width: 97%;
+                    margin: 5px 0px;
+                    padding-left: 5px;
+                    font-size: 24px;
+                }
+                button {
+                    width: 97%;
+                    display: block;
+                    margin-top: 10px;
+                    padding: 10px 20px;
+                    background-color: #56a676;
+                    color: white;
+                    border-radius: 3px;
+                    cursor: pointer;
+                }
+            }
+            .closeEvent {
+                color: #232323;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+            
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            
+            #modalSubmitBtn {
+                display: block;
+                margin-top: 10px;
+                width: 100%;
+                padding: 10px 20px;
+                background-color: #56a676;
+                color: white;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+            
+            #modalSubmitBtn:hover {
+                background-color: #478660;
+            }
+        }
   
 
 </style>
@@ -305,8 +374,52 @@
             </div>
             <div class="add">  
                 <h2>Today's Event</h2> 
-                <button class="addEventBtn">Add Event</button>
+                <button id="saveEventBtn" class="addEventBtn">Add Event</button>
             </div>
+
+            <!-- Add Event Modal -->
+
+            <div id="addEventModal" class="eventModal">
+                <div class="modal-content">
+                    <span class="closeEvent">&times;</span>
+                    <form id="eventForm" action="/submit-form" method="POST">
+                        <div>
+                            <div class="field input-field">
+                                <select class="field input-field" id="category" name="category">
+                                    <option value="Food & Drinks">Food & Drinks</option>
+                                    <option value="Shopping">Shopping</option>
+                                    <option value="Housing">Housing</option>
+                                    <option value="Transportation">Transportation</option>
+                                    <option value="Vehicle">Vehicle</option>
+                                    <option value="Life & Entertainment">Life & Entertainment</option>
+                                    <option value="Communication,PC">Communication,PC</option>
+                                    <option value="Financial Expenses">Financial Expenses</option>
+                                    <option value="Investment">Investment</option>
+                                    <option value="Income">Income</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="text" placeholder="Description" name="description" required>
+                        </div>
+                        
+                        <div class="field input-field" id="listContainer">
+                            <div style="display: flex; gap: 10px; width: 97%; justify-content: flex-start;">
+                                <input style="width: 60%;" type="text" placeholder="Name" class="input" name="itemName[]">
+                                <input style="width: 50%;" type="number" placeholder="Quantity" class="input" name="itemQuantity[]">
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="addButton">+</button>
+                        <button type="submit">Submit</button>
+                       
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add Event Modal -->
+
             <div class="event">
                 <h1>Food</h1>
                 <p style="margin: 5px 0px;">Breakfast</p>
@@ -390,6 +503,42 @@
             modal.style.display = "none";
         }
         }
+
+
+        var eventModal = document.getElementById("addEventModal");
+        var eventBtn = document.getElementById("saveEventBtn");
+        var eventSpan = document.getElementsByClassName("closeEvent")[0];
+
+        eventBtn.onclick = function() {
+        eventModal.style.display = "block";
+        }
+
+        eventSpan.onclick = function() {
+        eventModal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+        if (event.target == eventModal) {
+            eventModal.style.display = "none";
+        }
+        }
+
+        
+        var addButton = document.getElementById("addButton");
+        var listContainer = document.getElementById("listContainer");
+        var form = document.getElementById("eventForm");
+    
+        addButton.addEventListener("click", function() {
+            var newInputField = document.createElement("div");
+            newInputField.classList.add("field", "input-field");
+            newInputField.innerHTML = `
+                <div style="display: flex; gap: 10px; width: 97%; justify-content: flex-start;">
+                    <input style="width: 60%;" type="text" placeholder="Name" class="input" name="itemName[]">
+                    <input style="width: 50%;" type="number" placeholder="Quantity" class="input" name="itemQuantity[]">
+                </div>
+            `;
+            listContainer.appendChild(newInputField);
+        });
 
     </script>
 </body>
