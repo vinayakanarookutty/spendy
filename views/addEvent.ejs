@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Events</title>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Poppins";
+            font-weight: 400;
+            font-size: 20px
+        }
+        h1,h2,h3 {
+            font-size: 40px;
+            font-weight: 500;
+        }
+        body {
+            align-content: center;
+            justify-items: center;
+            display: grid;
+            background-color: #0171d3;
+            height: 100vh;
+            max-height: 100vh;
+        }
+        .container {
+            align-content: center;
+            justify-items: center;
+            display: grid;
+            background-color: white;
+            width: max-content;
+            padding: 5rem 3rem;
+            border-radius: 5px;
+
+            form {
+                margin: 10px 0;
+                align-content: center;
+                justify-items: center;
+                display: grid;
+                gap: .5rem;
+            }
+            select{
+                outline: none;
+                height: 2rem;
+                width: 20rem;
+                padding: 5px 5px;
+                border-radius: 5px;
+                font-weight: 100;
+                border: 1px solid#CACACA;
+            }
+
+            input {
+                outline: none;
+                height: 1.5rem;
+                width: 19.5rem;
+                padding: 5px 5px;
+                border-radius: 5px;
+                font-weight: 100;
+                border: 1px solid#CACACA;
+            }
+            p{
+                font-size: 15px;
+            }
+            a{
+                font-size: 15px;
+                color: #0171d3;
+            }
+            button {
+                padding: 5px 5px;
+                width: 20rem;
+                border: none;
+                color: aliceblue;
+                background-color: #0171d3;
+                border-radius: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Events</h1>
+        <form id="eventForm" action="/submit-form" method="POST">
+            <div>
+                <div class="field input-field">
+                    <select class="field input-field" id="category" name="category">
+                        <option value="Food & Drinks">Food & Drinks</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Housing">Housing</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Vehicle">Vehicle</option>
+                        <option value="Life & Entertainment">Life & Entertainment</option>
+                        <option value="Communication,PC">Communication,PC</option>
+                        <option value="Financial Expenses">Financial Expenses</option>
+                        <option value="Investment">Investment</option>
+                        <option value="Income">Income</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <input type="text" placeholder="Description" name="description" required>
+            </div>
+            
+            <div class="field input-field" id="listContainer">
+                <div style="display: flex; gap: 10px; width: 22rem; justify-content: flex-start; padding-left: 4%; padding-top: 1%">
+                    <input style="width: 50%;" type="text" placeholder="Name" class="input" name="itemName[]">
+                    <input style="width: 34%;" type="number" placeholder="Quantity" class="input" name="itemQuantity[]">
+                </div>
+            </div>
+            
+            <button type="button" id="addButton">+</button>
+            <button type="submit">Submit</button>
+           
+        </form>
+    </div>
+    <script>
+        var addButton = document.getElementById("addButton");
+        var listContainer = document.getElementById("listContainer");
+        var form = document.getElementById("eventForm");
+    
+        addButton.addEventListener("click", function() {
+            var newInputField = document.createElement("div");
+            newInputField.classList.add("field", "input-field");
+            newInputField.innerHTML = `
+                <div style="display: flex; gap: 10px; width: 22rem; justify-content: flex-start; padding-left: 4%; padding-top: 1%">
+                    <input style="width: 50%;" type="text" placeholder="Name" class="input" name="itemName[]">
+                    <input style="width: 34%;" type="number" placeholder="Quantity" class="input" name="itemQuantity[]">
+                </div>
+            `;
+            listContainer.appendChild(newInputField);
+        });
+    </script>
+</body>
+</html>
