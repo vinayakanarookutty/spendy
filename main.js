@@ -1,3 +1,4 @@
+const { json } = require("body-parser");
 var express = require("express");
 var router = express.Router();
 var mongoose = require("mongoose");
@@ -73,8 +74,8 @@ router.post("/flutter/login", async (req, res) => {
   if (user) {
       if (user.password == req.body.password) {
         email = user.email;
-        
-        res.status(200).send(json(user))
+        let userDetails=JSON.stringify(user)
+        res.status(200).send(userDetails)
       } else {
    
         res.status(404).json("Password is Wrong")
