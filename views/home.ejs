@@ -454,7 +454,7 @@
 <body onload="snackbar()">
     <div id="snackbar"><%= snack %></div>
     <div id="sidebar">
-        <h2>Midhun Murali</h1>
+        <h2><%= user.name%></h1>
             <hr>
             <ul>
                 <li class="selected">
@@ -548,16 +548,31 @@
             </div>
             
                     <!-- To-do List Accordian -->
-                    <button class="accordion">Open To-do List</button>
+                    
+                    <% if (event.combinedItems.length!=0) { %>
+                     <button style="margin-top: 2%;" class="accordion">Open To-do List</button>
+                  
+                   
                     <div class="panel">
+                        <% event.combinedItems.map(function(event) { %>
                         <div class="container">
                             <div style="display: flex; gap: 1rem; margin:0% 2%">
-                                <h4>Item Name: <p style="margin-left: 1%;" class="item">Bread</p></h4>
-                                <h4>Quantity: <p style="margin-left: 1%;" class="quantity">2</p></h4>
+                                <div  style="display: flex;">
+                                    <h4>Item: </h4>
+                                    <p style="margin-left: 1%;" class="item"><%= event.name %></p>
+                                </div>
+                               <div style="display: flex;"> 
+                                 <h4>Quantity: </h4>
+                                 <p style="margin-left: 1%;" class="quantity"><%= event.quantity    %></p>
+                               </div>
+                                
                             </div>
                             <input type="checkbox" id="colorCheckbox">
                         </div>
+                        <% }); %> 
                     </div>
+                           
+                    <% } %>
                     <!-- To-do List Accordian -->
     </div>
 
@@ -701,8 +716,6 @@ for (i = 0; i < acc.length; i++) {
             checkbox.addEventListener('change', function() {
             if (this.checked) {
                 container.classList.add('checked');
-            } else {
-                container.classList.remove('checked');
             }
             });
         });
