@@ -339,15 +339,15 @@
 </style>
 </head>
 <body onload="snackbar()">
-    <div id="snackbar">Some text some message..</div>
+    <div id="snackbar"><%= snack %></div>
     <div id="sidebar">
-        <h2>Midhun Murali</h1>
+        <h2><%= user.name%></h1>
             <hr>
             <ul>
                 <li>
                     <span class="material-symbols-outlined">home
                     </span>
-                    <a href="/home">Home</a></li>
+                    <a href="/home?id=<%= user._id%>">Home</a></li>
                 <li class="selected">
                     <span class="material-symbols-outlined">monitoring
                     </span>
@@ -373,7 +373,7 @@
             <img style="height: 2rem"; src="spendyLogo.png">
             <div class="budget">
                 <h3>Budget</h3>
-                <h3 class="myBudget">2000/-</h3>
+                <h3 class="myBudget"><%= user.budget %>/-</h3>
                 <button id="saveBtn" class="btnSave">
                     <span class="material-symbols-outlined">
                         edit
@@ -381,17 +381,21 @@
                 </button>
 
                 <div id="mymodal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>My Budget</h2>
-                    <hr style="margin-bottom: 10px;">
-                    <p>Increase budget:</p>
-                    <input type="text" id="input1" placeholder="Amount">
-                    <p>Decrease budget:</p>
-                    <input type="text" id="input1" placeholder="Amount">
-                    <button id="modalSubmitBtn">Submit</button>
-                </div>
-                </div>
+                    <form action="/budget" method="post">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>My Budget</h2>
+                        
+                        <hr style="margin-bottom: 10px;">
+                        <p>Increase budget:</p>
+                        <input type="hidden" name="userId" value="<%=user._id%>"> 
+                        <input name="increaseAmount" type="text" id="input1" placeholder="Amount">
+                        <p>Decrease budget:</p>
+                        <input name="decreaseAmount" type="text" id="input1" placeholder="Amount">
+                        <button type="submit" id="modalSubmitBtn">Submit</button>
+                    </div>
+                </form>
+                    </div>
 
             </div>
         </div>
@@ -456,8 +460,10 @@
 
     function snackbar() {
         var x = document.getElementById("snackbar");
-        x.className = "show";
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        if(x.innerHTML!="") {
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        }
     }
 
     </script>
