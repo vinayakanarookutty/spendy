@@ -549,12 +549,13 @@
             
                     <!-- To-do List Accordian -->
                     
-                    <% if (event.combinedItems.length>0) { %>
+                    <% if (event.combinedItems[0].name!==''  ) { %>
+
                      <button style="margin-top: 2%;" class="accordion">Open To-do List</button>
                   
                    
                     <div class="panel">
-                        <% event.combinedItems.map(function(event) { %>
+                        <% event.combinedItems.forEach(function(event) { %>
                         <div class="container">
                             <div style="display: flex; gap: 1rem; margin:0% 2%">
                                 <div  style="display: flex;">
