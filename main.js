@@ -239,6 +239,35 @@ console.log(date)
 });
 
 
+router.post("/flutter/spent", async (req, res) => {
+  try {
+    console.log(req.body)
+    const eventIdFromQuery = req.body.eventId;
+    const userIdFromQuery=req.body.userId;
+    const spend=parseInt(req.body.spend)
+    const updatedEvent = await EventModal.findOneAndUpdate(
+      { _id: eventIdFromQuery }, // Find user by email
+      { $set: { actualRate:spend } }, // Specify the fields to update
+      { new: true } // To return the updated document
+    );
+
+
+  
+   
+   const updatedUser = await UserModal.findOneAndUpdate(
+    { _id:userIdFromQuery }, // Find user by email
+    { $inc: { budget:-spend } }, // Specify the fields to update
+    { new: true } // To return the updated document
+  );
+    // Redirect after the user is successfully saved
+    
+    res.status(200).json("Data Edited Succesfully")
+  } catch (error) {
+    // Handle any errors that might occur during the process
+    console.error("Error creating user:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 
 
