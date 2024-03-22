@@ -452,7 +452,7 @@
 </style>
 </head>
 <body onload="snackbar()">
-    <div id="snackbar">Some text some message..</div>
+    <div id="snackbar"><%= snack %></div>
     <div id="sidebar">
         <h2>Midhun Murali</h1>
             <hr>
@@ -665,8 +665,10 @@
 
         function snackbar() {
             var x = document.getElementById("snackbar");
-            x.className = "show";
-            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+            if(x.innerHTML!="") {
+                x.className = "show";
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+            }
         }
 
         var acc = document.getElementsByClassName("accordion");

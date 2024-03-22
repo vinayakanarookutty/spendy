@@ -94,7 +94,7 @@ router.post("/login", async (req, res) => {
   if (user) {
       if (user.password == req.body.password) {
         email = user.email;
-        res.redirect(`/home?id=${user._id}`);
+        res.redirect(`/home?id=${user._id}&msg=`);
         // res.json("Login Succesfull",user)
       } else {
         res.render("login", { status: "Password is Wrong" });
@@ -113,7 +113,18 @@ router.get("/home", async (req, res) => {
   var user = await UserModal.findOne({ _id: userIdFromQuery });
   var eventDetails = await EventModal.find({ user: userIdFromQuery });
   console.log(eventDetails)
-  
+
+  console.log(req.query.msg)
+  msg = req.query.msg
+  let snack=""
+  if (msg) {
+    if (msg=="budget") {
+      snack = "Budget updated succesfully!"
+    } else if (msg=="event") {
+      snack = "Event added succesfully!"
+    }
+  }
+  console.log(snack)
 
   var budget = 0
   if(user?.budget!=null)
@@ -122,7 +133,7 @@ router.get("/home", async (req, res) => {
    
   }
   // Set user details in local storage
-  res.render("home", { user: user, budget: budget ,userId:userIdFromQuery,eventDetails});
+  res.render("home", { user: user, budget: budget ,userId:userIdFromQuery,eventDetails, snack: snack});
 });
 
 router.get("/flutter/home", async (req, res) => {
@@ -174,7 +185,7 @@ router.post("/budget", async (req, res) => {
 
 
     // Redirect after the user is successfully saved
-    res.redirect(`/home?id=${req.body.userId}`);
+    res.redirect(`/home?id=${req.body.userId}&msg=budget`);
    }
    else{
     let budget=0
@@ -199,7 +210,7 @@ router.post("/budget", async (req, res) => {
 
 
     // Redirect after the user is successfully saved
-    res.redirect(`/home?id=${req.body.userId}`);
+    res.redirect(`/home?id=${req.body.userId}&msg=budget`);
    }
   
    
@@ -231,7 +242,7 @@ router.post("/addEvent", async (req, res) => {
   user: req.body.userId
   });
   events.save();
-  res.redirect(`/home?id=${req.body.userId}`);
+  res.redirect(`/home?id=${req.body.userId}&msg=event`);
 
   
 });
@@ -273,7 +284,7 @@ router.get('/analysis', async (req,res) => {
       { new: true } // To return the updated document
     );
       // Redirect after the user is successfully saved
-      res.redirect(`/home?id=${userIdFromQuery}`);
+      res.redirect(`/home?id=${userIdFromQuery}&msg=`);
     } catch (error) {
       // Handle any errors that might occur during the process
       console.error("Error creating user:", error);
@@ -300,7 +311,7 @@ router.get('/analysis', async (req,res) => {
       await event.save();
   
       // Redirect after the user is successfully saved
-      res.redirect(`/home?email=${user.email}`);
+      res.redirect(`/home?email=${user.email}&msg=`);
     } catch (error) {
       // Handle any errors that might occur during the process
       console.error("Error creating user:", error);
@@ -317,7 +328,7 @@ router.post("/login", async (req, res) => {
     bcrypt.compare(req.body.password, user.password).then((response) => {
       if (response) {
         email = user.email;
-        res.redirect(`/home?email=${user.email}`);
+        res.redirect(`/home?email=${user.email}&msg=`);
       } else {
         res.render("login", { status: "Password is Wrong" });
       }
