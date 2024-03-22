@@ -303,7 +303,7 @@ router.get('/analysis', async (req,res) => {
  arrayOfArrays.unshift(array)
  console.log(arrayOfArrays);
 
-  res.render('analysis', {user: user,arrayOfArrays})
+  res.render('analysis', {user: user,arrayOfArrays,eventArray:events})
 })
 
 

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     
@@ -334,7 +335,11 @@
     from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
   }
-  
+  .content-wrap {
+    display: flex;
+    padding: 2rem 13rem;
+    background-color: rgb(239, 235, 235);
+  }
 
 </style>
 </head>
@@ -359,8 +364,73 @@
             <div class="blank">
             </div>
             
+            <h2>Event Chart</h2>
             
             <div id="chart_div" style="width: 80%; height: 500px;"></div>
+            <h2>SE Chart</h2>
+                    <main class="content-wrap">
+			<canvas id="myChart" width="400" height="400"></canvas>
+
+			<script>
+			const events =<%- JSON.stringify(eventArray) %>;
+			console.log(events)
+
+			
+			
+	
+				// Calculate savings or exceed amount for each event
+				const data = events.map(event => {
+					const savings = event.expectedRate - event.actualRate;
+					return {
+						eventName: event.eventName,
+						savings: savings > 0 ? savings : 0,
+						exceed: savings < 0 ? Math.abs(savings) : 0
+					};
+				});
+		
+				// Chart data
+				const labels = data.map(event => event.eventName);
+				const savingsData = data.map(event => event.savings);
+				const exceedData = data.map(event => event.exceed);
+		
+				// Chart configuration
+				const config = {
+					type: 'bar',
+					data: {
+						labels: labels,
+						datasets: [{
+								label: 'Savings',
+								data: savingsData,
+								backgroundColor: 'rgba(75, 192, 192, 0.2)',
+								borderColor: 'rgba(75, 192, 192, 1)',
+								borderWidth: 1
+							},
+							{
+								label: 'Exceed',
+								data: exceedData,
+								backgroundColor: 'rgba(255, 99, 132, 0.2)',
+								borderColor: 'rgba(255, 99, 132, 1)',
+								borderWidth: 1
+							}
+						]
+					},
+					options: {
+						scales: {
+							yAxes: [{
+								ticks: {
+									beginAtZero: true
+								}
+							}]
+						}
+					}
+				};
+		
+				// Render chart
+				const ctx = document.getElementById('myChart').getContext('2d');
+				new Chart(ctx, config);
+			</script>
+        </main>
+
             
             
         </div>
@@ -404,6 +474,8 @@
     </div>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
     <script>
         document.getElementById('toggle-sidebar').addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('collapsed');
