@@ -95,7 +95,7 @@ router.post("/login", async (req, res) => {
   if (user) {
       if (user.password == req.body.password) {
         email = user.email;
-        res.redirect(`/home?id=${user._id}`);
+        res.redirect(`/home?id=${user._id}&msg=`);
         // res.json("Login Succesfull",user)
       } else {
         res.render("login", { status: "Password is Wrong" });
@@ -114,7 +114,18 @@ router.get("/home", async (req, res) => {
   var user = await UserModal.findOne({ _id: userIdFromQuery });
   var eventDetails = await EventModal.find({ user: userIdFromQuery });
  
-  
+
+  console.log(req.query.msg)
+  msg = req.query.msg
+  let snack=""
+  if (msg) {
+    if (msg=="budget") {
+      snack = "Budget updated succesfully!"
+    } else if (msg=="event") {
+      snack = "Event added succesfully!"
+    }
+  }
+  console.log(snack)
 
   var budget = 0
   if(user?.budget!=null)
@@ -123,7 +134,7 @@ router.get("/home", async (req, res) => {
    
   }
   // Set user details in local storage
-  res.render("home", { user: user, budget: budget ,userId:userIdFromQuery,eventDetails});
+  res.render("home", { user: user, budget: budget ,userId:userIdFromQuery,eventDetails, snack: snack});
 });
 
 router.get("/flutter/home", async (req, res) => {
@@ -175,7 +186,7 @@ router.post("/budget", async (req, res) => {
 
 
     // Redirect after the user is successfully saved
-    res.redirect(`/home?id=${req.body.userId}`);
+    res.redirect(`/home?id=${req.body.userId}&msg=budget`);
    }
    else{
     let budget=0
@@ -200,7 +211,7 @@ router.post("/budget", async (req, res) => {
 
 
     // Redirect after the user is successfully saved
-    res.redirect(`/home?id=${req.body.userId}`);
+    res.redirect(`/home?id=${req.body.userId}&msg=budget`);
    }
   
    
@@ -233,7 +244,7 @@ console.log(date)
   date:date
   });
   events.save();
-  res.redirect(`/home?id=${req.body.userId}`);
+  res.redirect(`/home?id=${req.body.userId}&msg=event`);
 
   
 });
@@ -296,7 +307,7 @@ router.post("/flutter/spent", async (req, res) => {
       { new: true } // To return the updated document
     );
       // Redirect after the user is successfully saved
-      res.redirect(`/home?id=${userIdFromQuery}`);
+      res.redirect(`/home?id=${userIdFromQuery}&msg=`);
     } catch (error) {
       // Handle any errors that might occur during the process
       console.error("Error creating user:", error);
@@ -304,9 +315,51 @@ router.post("/flutter/spent", async (req, res) => {
     }
   });
 
+  router.post("/events/:id", async (req, res) => {
+    try {
+      console.log(req.params.id)
+      
+      const userId = req.params.id;
+      const user = await UserModal.findOne(
+        { _id: userId });
+     
+      var event = new EventModal({
+        eventName: req.body.eventName,
+        eventDescription: req.body.eventDesc,
+        expectedRate: req.body.expectedRate,
+        user:user._id
+      });
   
+      // Save the user and wait for the operation to complete
+      await event.save();
+  
+      // Redirect after the user is successfully saved
+      res.redirect(`/home?email=${user.email}`);
+    } catch (error) {
+      // Handle any errors that might occur during the process
+      console.error("Error creating user:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  });
 
 
+router.post("/login", async (req, res) => {
+  console.log(req.body);
+  var user = await UserModal.findOne({ email: req.body.email });
+
+  if (user) {
+    bcrypt.compare(req.body.password, user.password).then((response) => {
+      if (response) {
+        email = user.email;
+        res.redirect(`/home?email=${user.email}`);
+      } else {
+        res.render("login", { status: "Password is Wrong" });
+      }
+    });
+  } else {
+    res.render("login", { status: "UserName is Wrong" });
+  }
+});
 
 //Home Routes for Displaying HomePage Page
 
