@@ -286,20 +286,24 @@ router.get('/analysis', async (req,res) => {
   const userIdFromQuery = req.query.id;
   console.log(userIdFromQuery);
   var user = await UserModal.findOne({ _id: userIdFromQuery });
+  var events = await EventModal.find({ user: userIdFromQuery });
+  console.log(events)
+  const arrayOfArrays = events.map(event => {
+    return [
+      event.date.toDateString(),
+      event.expectedRate,
+      event.actualRate,
+    ];
+  });
+  
+  
+  var array=["","Expected","Spend"]
 
-  console.log(req.query.msg)
-  msg = req.query.msg
-  let snack=""
-  if (msg) {
-    if (msg=="budget") {
-      snack = "Budget updated succesfully!"
-    } else if (msg=="event") {
-      snack = "Event added succesfully!"
-    }
-  }
-  console.log(snack)
+ 
+ arrayOfArrays.unshift(array)
+ console.log(arrayOfArrays);
 
-  res.render('analysis', {user: user, snack: snack})
+  res.render('analysis', {user: user,arrayOfArrays})
 })
 
 

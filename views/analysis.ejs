@@ -339,7 +339,7 @@
 </style>
 </head>
 <body onload="snackbar()">
-    <div id="snackbar"><%= snack %></div>
+    <div id="snackbar"></div>
     <div id="sidebar">
         <h2><%= user.name%></h1>
             <hr>
@@ -432,15 +432,7 @@
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Day 1', 'Actual', 'Spend'],
-          ['Day 2',  1000,      400],
-          ['Day 3',  1170,      460],
-          ['Day 4',  660,       1120],
-          ['Day 5',  1030,      540],
-          ['Day 6',  660,       1120],
-          ['Day 7',  1030,      540]
-        ]);
+        var data = google.visualization.arrayToDataTable(<%- JSON.stringify(arrayOfArrays) %>);
 
         var options = {
           title: 'Travel',
