@@ -249,7 +249,7 @@ console.log(date)
   
 });
 
-
+router.get('/analysis')
 
 
 
