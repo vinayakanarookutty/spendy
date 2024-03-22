@@ -113,19 +113,8 @@ router.get("/home", async (req, res) => {
   console.log(userIdFromQuery);
   var user = await UserModal.findOne({ _id: userIdFromQuery });
   var eventDetails = await EventModal.find({ user: userIdFromQuery });
- 
-
-  console.log(req.query.msg)
-  msg = req.query.msg
-  let snack=""
-  if (msg) {
-    if (msg=="budget") {
-      snack = "Budget updated succesfully!"
-    } else if (msg=="event") {
-      snack = "Event added succesfully!"
-    }
-  }
-  console.log(snack)
+  console.log(eventDetails)
+  
 
   var budget = 0
   if(user?.budget!=null)
@@ -249,7 +238,7 @@ console.log(date)
   
 });
 
-router.get('/analysis')
+
 
 
 
