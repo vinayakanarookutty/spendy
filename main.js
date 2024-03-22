@@ -24,8 +24,9 @@ var eventSchema = mongoose.Schema({
   expectedRate: Number,
   actualRate: Number,
   combinedItems:Array,
+  date:Date,
   user: { type: Schema.Types.ObjectId, ref: 'user' }
-},{strict:false});
+},{strict:false}, { timestamps: true });
 
 // Registering schema to mongoose
 var UserModal = mongoose.model("user", userSchema);
@@ -112,7 +113,7 @@ router.get("/home", async (req, res) => {
   console.log(userIdFromQuery);
   var user = await UserModal.findOne({ _id: userIdFromQuery });
   var eventDetails = await EventModal.find({ user: userIdFromQuery });
-  console.log(eventDetails)
+ 
   
 
   var budget = 0
@@ -221,14 +222,15 @@ router.post("/addEvent", async (req, res) => {
     name: itemName,
     quantity: itemQuantities[index]
   }));
-
-
+const date=new Date()
+console.log(date)
   var events = new EventModal({
   eventName: req.body.category,
   eventDescription:req.body.description,
   combinedItems:items,
   expectedRate: req.body.price,
-  user: req.body.userId
+  user: req.body.userId,
+  date:date
   });
   events.save();
   res.redirect(`/home?id=${req.body.userId}`);
@@ -238,17 +240,7 @@ router.post("/addEvent", async (req, res) => {
 
 
 
-router.get('/analysis/:id', async (req,res) => {
-  const userId = req.params.id;
-  const user = await UserModal.findOne(
-    { _id: userId });
-    var eventDetails = await EventModal.find({ user: userId });
-  res.render("analysis",{user: user,eventArray:eventDetails})
-})
 
-router.get('/analysis', async (req,res) => {
-  res.render("analysis")
-})
 
 
 
@@ -265,6 +257,8 @@ router.get('/analysis', async (req,res) => {
         { $set: { actualRate:spend } }, // Specify the fields to update
         { new: true } // To return the updated document
       );
+
+
     
      
      const updatedUser = await UserModal.findOneAndUpdate(
@@ -281,51 +275,9 @@ router.get('/analysis', async (req,res) => {
     }
   });
 
-  router.post("/events/:id", async (req, res) => {
-    try {
-      console.log(req.params.id)
-      
-      const userId = req.params.id;
-      const user = await UserModal.findOne(
-        { _id: userId });
-     
-      var event = new EventModal({
-        eventName: req.body.eventName,
-        eventDescription: req.body.eventDesc,
-        expectedRate: req.body.expectedRate,
-        user:user._id
-      });
   
-      // Save the user and wait for the operation to complete
-      await event.save();
-  
-      // Redirect after the user is successfully saved
-      res.redirect(`/home?email=${user.email}`);
-    } catch (error) {
-      // Handle any errors that might occur during the process
-      console.error("Error creating user:", error);
-      res.status(500).send("Internal Server Error");
-    }
-  });
 
 
-router.post("/login", async (req, res) => {
-  console.log(req.body);
-  var user = await UserModal.findOne({ email: req.body.email });
-
-  if (user) {
-    bcrypt.compare(req.body.password, user.password).then((response) => {
-      if (response) {
-        email = user.email;
-        res.redirect(`/home?email=${user.email}`);
-      } else {
-        res.render("login", { status: "Password is Wrong" });
-      }
-    });
-  } else {
-    res.render("login", { status: "UserName is Wrong" });
-  }
-});
 
 //Home Routes for Displaying HomePage Page
 
