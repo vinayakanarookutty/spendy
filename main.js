@@ -284,6 +284,7 @@ router.post("/flutter/spent", async (req, res) => {
 
 router.get('/analysis', async (req,res) => {
   const userIdFromQuery = req.query.id;
+  // const eventNameFromQuery = req.query.name;
   console.log(userIdFromQuery);
   var user = await UserModal.findOne({ _id: userIdFromQuery });
   var events = await EventModal.find({ user: userIdFromQuery });
