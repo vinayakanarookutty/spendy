@@ -114,6 +114,18 @@ router.get("/home", async (req, res) => {
   var user = await UserModal.findOne({ _id: userIdFromQuery });
   var eventDetails = await EventModal.find({ user: userIdFromQuery });
   console.log(eventDetails)
+
+  console.log(req.query.msg)
+  msg = req.query.msg
+  let snack=""
+  if (msg) {
+    if (msg=="budget") {
+      snack = "Budget updated succesfully!"
+    } else if (msg=="event") {
+      snack = "Event added succesfully!"
+    }
+  }
+  console.log(snack)
   
 
   var budget = 0
@@ -211,6 +223,7 @@ router.post("/budget", async (req, res) => {
   }
 });
 
+
 router.post("/addEvent", async (req, res) => {
   // const userId = req.params.id;
   // const user = await UserModal.findOne(
@@ -269,12 +282,27 @@ router.post("/flutter/spent", async (req, res) => {
   }
 });
 
+router.get('/analysis', async (req,res) => {
+  const userIdFromQuery = req.query.id;
+  console.log(userIdFromQuery);
+  var user = await UserModal.findOne({ _id: userIdFromQuery });
+
+  console.log(req.query.msg)
+  msg = req.query.msg
+  let snack=""
+  if (msg) {
+    if (msg=="budget") {
+      snack = "Budget updated succesfully!"
+    } else if (msg=="event") {
+      snack = "Event added succesfully!"
+    }
+  }
+  console.log(snack)
+
+  res.render('analysis', {user: user, snack: snack})
+})
 
 
-
-
-
- 
   router.post("/spent", async (req, res) => {
     try {
       console.log(req.body)
