@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Dashboard</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    
+<style>
+    
+    * {
+        font-family: "Poppins";
+        margin: 0;
+        padding: 0;
+        font-weight: 500;
+    }
+    
+    body {
+        margin: 0;
+        height: 95.4vh;
+        font-family: Arial, sans-serif;
+    }
+    
+    .material-symbols-outlined {
+        color: #7ae4a5;
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+
+
+    .event {
+        background-color: rgb(255, 255, 255);
+        padding: 2rem;
+        margin: 1rem;
+        font-size: 20px;
+        border: 1dp solid grey;
+        border-radius: 5px;
+    }
+    
+    #sidebar {
+        margin-top: 3rem;
+        height: 100vh;
+        width: 200px;
+        padding-top: 3rem;
+        padding-left: 2rem;
+        background-color: #ffffff;
+        color: #000000;
+        position: fixed;
+        left: 0;
+        top: 0;
+        transition: all 0.3s ease;
+        overflow-y: auto;
+    }
+    
+    #sidebar.collapsed {
+        display: none;
+        width: 60px;
+    }
+    
+    #content {
+        display: grid;
+        height: 100%;
+        overflow-y: auto;
+        background-color: #bce3cc;
+        margin-left: 250px;
+        padding: 20px;
+        transition: margin-left 0.3s ease;
+    }
+    
+    #content.collapsed {
+        margin-left: 60px;
+        transition: margin-left 0.3s ease;
+    }
+
+    input {
+        font-size: 25px;
+        padding: 5px 20px;
+    }
+    
+    #header {
+        display: flex;
+        align-items: center;
+        background-color: #ffffff;
+        color: #000000;
+        padding: 24px;
+        width: 100%;
+        justify-content: space-between;
+        position: fixed;
+        padding-right: 300px;
+        top: 0;
+        z-index: 1000;
+    }
+
+    button{ 
+        color: #ffffff;
+        border: none;
+        background-color: none;
+        padding: 5px;
+        left: 10px;
+        top: 50%;
+    }
+    
+    #toggle-sidebar {
+        color: #fff;
+        border: none;
+        padding: 5px;
+        left: 10px;
+        top: 50%;
+    }
+    .blank {
+        height: 13vh;
+    }
+
+    .budget {
+        span {
+            margin-left: 10px;
+        }
+        input{
+            width: 5rem;
+        }
+        .material-symbols-outlined {
+          color: #ffffff;
+          margin: 0;
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        display: flex;
+        margin-left: 80px;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    #toggle-sidebar:focus {
+        outline: none;
+    }
+
+    .btnNo{
+        background: none;
+        background-color: none;
+        height: min-content;
+        width: min-content;
+    }
+
+    .btnSave {
+        margin-left: 10px;
+        padding-top: 1dvh;
+        padding-left: 10px;
+        padding-right: 10px;
+        background-color: #56a676;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+    }
+    ul{
+        margin: 20px 0;
+        list-style: none;
+        font-size: 18px;
+
+        .material-symbols-outlined {
+            color: #000000;
+            margin: 0px 10px;
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+          }
+
+        li{
+            justify-items: center;
+            align-content: center;
+            display: flex;
+            padding: 2px 0;
+            color: #000000;
+        }
+        li.selected {
+            color: #00983d;
+            .material-symbols-outlined {
+                color: #00983d;
+                font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+              }
+        }
+    }
+    hr {
+        margin-top: 10px;
+        opacity: 30%;
+    }
+
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.5); 
+        }
+  
+        .modal-content {
+            border-radius: 5px;
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            font-size: 20px;
+            border: 1px solid #888;
+            width: 20%; 
+            input{
+                width: 90%;
+                margin: 5px 0px;
+                padding-left: 5px;
+                font-size: 20px;
+            }
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        #modalSubmitBtn {
+            display: block;
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #56a676;
+            color: white;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        #modalSubmitBtn:hover {
+            background-color: #478660;
+        }
+
+        .addEventBtn {
+            padding-top: 1dvh;
+            padding-left: 10px;
+            font-size: 20px;
+            padding-right: 10px;
+            color: #ffffff;
+            background-color: #56a676;
+            border-radius: 5px;
+        }
+        .addEventBtn:hover {
+            background-color: #00983d;
+        }
+        .add {
+            display: flex;
+            padding: 0 1.5rem;
+            color: #225436;
+            justify-content: space-between;
+        }
+        .myBudget {
+            margin: 0px 15px;
+            color: #3eab6a;
+        }
+        a {
+            text-decoration: none;
+        }
+
+        .eventModal{
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.5); 
+
+            .modal-content {
+                border-radius: 5px;
+                background-color: #fefefe;
+                margin: 15% auto;
+                padding: 20px;
+                font-size: 20px;
+                border: 1px solid #888;
+                width: 20%; 
+                input{
+                    width: 90%;
+                    margin: 5px 0px;
+                    padding-left: 5px;
+                    font-size: 20px;
+                }
+                select{
+                    width: 97%;
+                    margin: 5px 0px;
+                    padding-left: 5px;
+                    font-size: 24px;
+                }
+                button {
+                    width: 97%;
+                    display: block;
+                    margin-top: 10px;
+                    padding: 10px 20px;
+                    background-color: #56a676;
+                    color: white;
+                    border-radius: 3px;
+                    cursor: pointer;
+                }
+            }
+            .closeEvent {
+                color: #232323;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+            
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            
+            #modalSubmitBtn {
+                display: block;
+                margin-top: 10px;
+                width: 100%;
+                padding: 10px 20px;
+                background-color: #56a676;
+                color: white;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+            
+            #modalSubmitBtn:hover {
+                background-color: #478660;
+            }
+        }
+
+    
+        /* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    background-color: #56a676; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 50%; /* Center the snackbar */
+    bottom: 30px; /* 30px from the bottom */
+  }
+  
+  /* Show the snackbar when clicking on a button (class added with JavaScript) */
+  #snackbar.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+  
+  /* Animations to fade the snackbar in and out */
+  @-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+  
+  @keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+  
+  @-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+  
+  @keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+  
+  /* Style the buttons that are used to open and close the accordion panel */
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+  }
+  
+  /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+  .active, .accordion:hover {
+    background-color: #ccc;
+  }
+  
+  /* Style the accordion panel. Note: hidden by default */
+  .panel {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    
+    .container {
+        background-color: #f0f0f0;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        border-radius: 3px;
+        margin: 20px;
+        background-color: rgb(218, 255, 216);
+        transition: background-color 0.3s ease;
+      }
+      
+      .container p {
+        margin-bottom: 10px;
+        margin-right: 15px;
+      }
+      
+      .container input[type="checkbox"] {
+        margin-right: 10px;
+      }
+      
+      .checked {
+        background-color: rgb(255, 216, 216);
+      }
+  }
+
+</style>
+</head>
+<body onload="snackbar()">
+    <div id="snackbar"><%= snack %></div>
+    <div id="sidebar">
+        <h2><%= user.name%></h1>
+            <hr>
+            <ul>
+                <li class="selected">
+                    <span class="material-symbols-outlined">home
+                    </span>
+                    <a>Home</a></li>
+                <li>
+                    <span class="material-symbols-outlined">monitoring
+                    </span>
+                    <a href="/analysis?id=<%= user._id %>">Analysis</a></li>
+                    <li>
+                        <span class="material-symbols-outlined">
+                            network_node
+                        </span>
+                        <a href="/goals?id=<%= user._id %>">Goal</a></li>
+            </ul>
+    </div>
+    <div id="content">
+        <div class="content">
+            <div class="blank">
+            </div>
+            <div class="add">  
+                <h2 >Goals</h2> 
+                <button id="saveEventBtn" class="addEventBtn">Add Event</button>
+            </div>
+
+            <!-- Add Event Modal -->
+            
+            <div id="addEventModal" class="eventModal">
+                <div class="modal-content">
+                    <span class="closeEvent">&times;</span>
+                    <form id="eventForm" action="/addgoal" method="POST">
+
+                        <h4>Add Goals</h4>
+                        <div>
+                            <input type="text" placeholder="Goal" name="goalName" required>
+                        </div>
+                        <div>
+                            <input type="number" placeholder="Expected Price" name="price" required>
+                        </div>
+                        <input type="hidden" name="userId" value="<%=user.id%>"> 
+                      
+                    
+                        <button type="submit">Submit</button>
+                       
+                    </form>
+                </div>
+            </div>
+    
+            <!-- Add Event Modal -->
+           
+           
+        </div>
+    </div>
+    <div id="header">
+        <div style="display: flex;">
+            <button class="btnNo" id="toggle-sidebar">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <img style="height: 2rem"; src="spendyLogo.png">
+            <div class="budget">
+                <h3>Budget</h3>
+                <h3 class="myBudget"><%=budget %>/-</h3>
+                <button id="saveBtn" class="btnSave">
+                    <span style="color: #fff;" class="material-symbols-outlined">
+                        edit
+                    </span>
+                </button>
+
+                <div id="mymodal" class="modal">
+                <form action="/budget" method="post">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>My Budget</h2>
+                    
+                    <hr style="margin-bottom: 10px;">
+                    <p>Increase budget:</p>
+                    <input type="hidden" name="userId" value="<%=user.id%>"> 
+                    <input name="increaseAmount" type="text" id="input1" placeholder="Amount">
+                    <p>Decrease budget:</p>
+                    <input name="decreaseAmount" type="text" id="input1" placeholder="Amount">
+                    <button type="submit" id="modalSubmitBtn">Submit</button>
+                </div>
+            </form>
+                </div>
+
+            </div>
+        </div>
+        <button class="btnNo"  style="margin-right: 40px;">
+            <span class="material-symbols-outlined">power_settings_new</span></button>
+    </div>
+
+    <script>
+        document.getElementById('toggle-sidebar').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+            document.getElementById('content').classList.toggle('collapsed');
+        });
+        
+        var modal = document.getElementById("mymodal");
+        var btn = document.getElementById("saveBtn");
+        var span = document.getElementsByClassName("close")[0];
+
+        btn.onclick = function() {
+        modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+        modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+        }
+
+
+        var eventModal = document.getElementById("addEventModal");
+        var eventBtn = document.getElementById("saveEventBtn");
+        var eventSpan = document.getElementsByClassName("closeEvent")[0];
+
+        eventBtn.onclick = function() {
+        eventModal.style.display = "block";
+        }
+
+        eventSpan.onclick = function() {
+        eventModal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+        if (event.target == eventModal) {
+            eventModal.style.display = "none";
+        }
+        }
+
+        
+        var addButton = document.getElementById("addButton");
+        var listContainer = document.getElementById("listContainer");
+        var form = document.getElementById("eventForm");
+    
+        addButton.addEventListener("click", function() {
+            var newInputField = document.createElement("div");
+            newInputField.classList.add("field", "input-field");
+            newInputField.innerHTML = `
+                <div style="display: flex; gap: 10px; width: 97%; justify-content: flex-start;">
+                    <input style="width: 60%;" type="text" placeholder="Name" class="input" name="itemName[]">
+                    <input style="width: 50%;" type="number" placeholder="Quantity" class="input" name="itemQuantity[]">
+                </div>
+            `;
+            listContainer.appendChild(newInputField);
+        });
+
+        function snackbar() {
+            var x = document.getElementById("snackbar");
+            if(x.innerHTML!="") {
+                x.className = "show";
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+            }
+        }
+
+        var acc = document.getElementsByClassName("accordion");
+var i;
+
+
+/*Accordian*/
+
+
+
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+  });
+}
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkbox = document.getElementById('colorCheckbox');
+            const container = document.querySelector('.container');
+            
+            checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                container.classList.add('checked');
+            }
+            });
+        });
+        
+
+    </script>
+</body>
+</html>

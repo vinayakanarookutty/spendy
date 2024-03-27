@@ -18,6 +18,13 @@ var userSchema = mongoose.Schema({
   password: String,
   budget:Number
 });
+
+var goalSchema = mongoose.Schema({
+  goalName: String,
+  expectedPrice: Number,
+  date:Date,
+  user:{ type: Schema.Types.ObjectId, ref: 'user' }
+},{strict:false}, { timestamps: true });
 var eventSchema = mongoose.Schema({
   eventName: String,
   eventDescription: String,
@@ -31,6 +38,7 @@ var eventSchema = mongoose.Schema({
 // Registering schema to mongoose
 var UserModal = mongoose.model("user", userSchema);
 var EventModal = mongoose.model("events", eventSchema);
+var GoalModal=mongoose.model("goals",goalSchema)
 
 //Different Routes
 
@@ -383,5 +391,59 @@ router.post("/login", async (req, res) => {
 });
 
 //Home Routes for Displaying HomePage Page
+
+
+router.get('/goals', async (req,res) => {
+  const userIdFromQuery = req.query.id;
+  console.log(userIdFromQuery);
+  var user = await UserModal.findOne({ _id: userIdFromQuery });
+  // var eventDetails = await EventModal.find({ user: userIdFromQuery });
+  // console.log(eventDetails)
+
+  console.log(req.query.msg)
+  msg = req.query.msg
+  let snack=""
+  if (msg) {
+    if (msg=="budget") {
+      snack = "Budget updated succesfully!"
+    } else if (msg=="event") {
+      snack = "Event added succesfully!"
+    }
+  }
+  console.log(snack)
+  
+
+  var budget = 0
+  if(user?.budget!=null)
+  {
+    budget = user.budget
+   
+  }
+  
+
+  res.render('goals', {user: user,budget: budget , snack: snack})
+})
+
+
+router.post("/addgoal", async (req, res) => {
+ 
+
+const date=new Date()
+console.log(date)
+  var events = new EventModal({
+  eventName: req.body.category,
+  eventDescription:req.body.description,
+  combinedItems:items,
+  expectedRate: req.body.price,
+  user: req.body.userId,
+  date:date
+  });
+  events.save();
+  res.redirect(`/home?id=${req.body.userId}&msg=event`);
+
+  
+});
+
+
 
   module.exports = router
