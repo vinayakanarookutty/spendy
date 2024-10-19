@@ -25,6 +25,18 @@ var goalSchema = mongoose.Schema({
   date:Date,
   user:{ type: Schema.Types.ObjectId, ref: 'user' }
 },{strict:false}, { timestamps: true });
+
+
+const WorkshopSchema = new mongoose.Schema({
+  email: String,
+  name: String,
+  phone: String,
+  experienceLevel: String,
+  hearAboutUs: String,
+  specialRequirements: String,
+});
+
+
 var eventSchema = mongoose.Schema({
   eventName: String,
   eventDescription: String,
@@ -39,9 +51,29 @@ var eventSchema = mongoose.Schema({
 var UserModal = mongoose.model("user", userSchema);
 var EventModal = mongoose.model("events", eventSchema);
 var GoalModal=mongoose.model("goals",goalSchema)
-
+const Workshop = mongoose.model('workshop', WorkshopSchema);
 //Different Routes
 
+
+router.post('/registration', async (req, res) => {
+  try {
+    const newUser = new Workshop(req.body);
+    await newUser.save();
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to save user data' });
+  }
+});
+
+// Route to retrieve all users
+router.get('/List', async (req, res) => {
+  try {
+    const users = await Workshop.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve users' });
+  }
+});
 
 //Login Routes for Displaying Login Page
 router.get("/", (req, res) => {
@@ -243,6 +275,10 @@ router.post("/addEvent", async (req, res) => {
     name: itemName,
     quantity: itemQuantities[index]
   }));
+
+
+
+  
 const date=new Date()
 console.log(date)
   var events = new EventModal({
