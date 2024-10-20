@@ -34,7 +34,7 @@ const WorkshopSchema = new mongoose.Schema({
   experienceLevel: String,
   hearAboutUs: String,
   specialRequirements: String,
-});
+},{strict:false});
 
 
 var eventSchema = mongoose.Schema({
