@@ -19,6 +19,13 @@ var userSchema = mongoose.Schema({
   budget:Number
 });
 
+var cardSchema = mongoose.Schema({
+  cardNumber: String,
+  expDate: String,
+  cvv: String,
+  cardHolderName: String
+});
+
 var goalSchema = mongoose.Schema({
   goalName: String,
   expectedPrice: Number,
@@ -52,6 +59,7 @@ var UserModal = mongoose.model("user", userSchema);
 var EventModal = mongoose.model("events", eventSchema);
 var GoalModal=mongoose.model("goals",goalSchema)
 const Workshop = mongoose.model('workshop', WorkshopSchema);
+const Card = mongoose.model('cards', cardSchema);
 //Different Routes
 
 
@@ -65,6 +73,26 @@ router.post('/registration', async (req, res) => {
   }
 });
 
+router.post('/cards', async (req, res) => {
+  try {
+    const newCard = new Card(req.body);
+    await newCard.save();
+    res.status(201).json(newCard);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to save user data' });
+  }
+});
+
+
+
+router.get('/cardList', async (req, res) => {
+  try {
+    const cards = await Card.find();
+    res.status(200).json(cards);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve users' });
+  }
+});
 // Route to retrieve all users
 router.get('/List', async (req, res) => {
   try {
