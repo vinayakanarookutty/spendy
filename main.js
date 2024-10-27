@@ -2,6 +2,10 @@ const { json } = require("body-parser");
 var express = require("express");
 var router = express.Router();
 var mongoose = require("mongoose");
+var multer =require("multer")
+
+
+const Grid = require('gridfs-stream');
 const Schema = mongoose.Schema;
 // MongoDB Connection to cloud database
 mongoose.connect(
@@ -9,6 +13,14 @@ mongoose.connect(
 ).then(()=>{
     console.log("DB Connected")
 });
+const conn = mongoose.connection;
+let gfs;
+
+conn.once('open', () => {
+  gfs = Grid(conn.db, mongoose.mongo);
+  gfs.collection('uploads');
+});
+
 
 //Schema of the User
 var userSchema = mongoose.Schema({
@@ -54,13 +66,105 @@ var eventSchema = mongoose.Schema({
   user: { type: Schema.Types.ObjectId, ref: 'user' }
 },{strict:false}, { timestamps: true });
 
+
+
+// Define PDF Schema
+const pdfSchema = new mongoose.Schema({
+  name: String,
+  file: {
+    data: Buffer,
+    contentType: String
+  },
+  uploadDate: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+const PDF = mongoose.model('PDF', pdfSchema);
 // Registering schema to mongoose
 var UserModal = mongoose.model("user", userSchema);
+
 var EventModal = mongoose.model("events", eventSchema);
 var GoalModal=mongoose.model("goals",goalSchema)
 const Workshop = mongoose.model('workshop', WorkshopSchema);
 const Card = mongoose.model('cards', cardSchema);
 //Different Routes
+
+const storage = multer.memoryStorage();
+const upload = multer({ 
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'application/pdf') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF files are allowed!'), false);
+    }
+  },
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10MB limit
+  }
+});
+
+// Upload route
+router.post('/upload', upload.single('file'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded!' });
+    }
+
+    const newPDF = new PDF({
+      name: req.body.name,
+      file: {
+        data: req.file.buffer,
+        contentType: req.file.mimetype
+      }
+    });
+
+    await newPDF.save();
+    res.status(200).json({ message: 'File uploaded successfully!' });
+  } catch (error) {
+    console.error('Upload error:', error);
+    res.status(500).json({ message: 'Error uploading file' });
+  }
+});
+
+
+
+router.get('/pdfs/byName/:name', async (req, res) => {
+  try {
+    const pdf = await PDF.findOne({ name: req.params.name }, { file: 0 }); // Exclude file data
+    if (!pdf) {
+      return res.status(404).json({ message: 'PDF not found' });
+    }
+    res.json(pdf);
+  } catch (error) {
+    console.error('Error finding PDF:', error);
+    res.status(500).json({ message: 'Error finding PDF' });
+  }
+});
+
+// Modify your existing download route to handle errors better
+router.get('/pdf/:id', async (req, res) => {
+  try {
+    const pdf = await PDF.findById(req.params.id);
+    if (!pdf || !pdf.file) {
+      return res.status(404).json({ message: 'PDF not found' });
+    }
+    
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="${pdf.name}.pdf"`,
+    });
+    res.send(pdf.file.data);
+  } catch (error) {
+    console.error('Error downloading PDF:', error);
+    res.status(500).json({ message: 'Error downloading PDF' });
+  }
+});
+
+
+
 
 
 router.post('/registration', async (req, res) => {
